@@ -8,11 +8,16 @@ RUN npm run build
 
 # ETAPA 2: Servidor de Producción (Nginx)
 FROM nginx:stable-alpine
-# RÚBRICA: Uso de Nginx para mejor rendimiento que el modo dev
-COPY --from=build /app/dist /usr/share/nginx/html
 
-# Configuración para que las rutas de React (SPA) funcionen en Nginx
-RUN echo 'server { listen 80; location / { root /usr/share/nginx/html; index index.html; try_files $uri $uri/ /index.html; } }' > /etc/nginx/conf.d/default.conf
+# RÚBRICA IE1: Limpieza y permisos
+# Borramos la configuración por defecto de Nginx
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copiamos nuestra configuración profesional (IE7 - Integración)
+COPY default.conf /etc/nginx/conf.d/default.conf
+
+# Copiamos los archivos construidos de React
+COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
