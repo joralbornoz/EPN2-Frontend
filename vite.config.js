@@ -5,15 +5,14 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // Configuración para Despachos (Puerto 8080)
+      // Configuración para Desarrollo Local (Tu PC)
       '/api/v1/despachos': {
-        target: 'http://100.26.205.247:8080',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
-      // Configuración para Ventas (Puerto 8081)
       '/api/v1/ventas': {
-        target: 'http://100.26.205.247:8081',
+        target: 'http://localhost:8081',
         changeOrigin: true,
         secure: false,
       }
