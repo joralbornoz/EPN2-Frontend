@@ -22,3 +22,19 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/epn2-frontend:latest
+      # ... (pasos anteriores de build y push) ...
+
+      - name: Desplegar en EC2 via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_EC2_IP }}
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Detener contenedores anteriores
+            docker stop epn2-frontend-app || true
+            docker rm epn2-frontend-app || true
+            # Descargar la imagen más reciente
+            docker pull joralbornozm/epn2-frontend:latest
+            # Ejecutar el nuevo contenedor
+            docker run -d --name epn2-frontend-app -p 80:80 joralbornozm/epn2-frontend:latest
