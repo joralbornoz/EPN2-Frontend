@@ -7,20 +7,18 @@ export const TableCompras = () => {
   const [ventas, setVentas] = useState([]);
 
   const compras = async () => {
-    await axios.get("http://192.168.30/api/v1/ventas", {
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-  }
-    }).then((response) => {
-      console.log(response.data);
-      setVentas(response.data);
-    });
-  };
-  // Llamada a la función para obtener los datos cuando el componente se monta
-  useEffect(() => {
-    compras();
-  }, []);
+  await axios.get("/api/v1/ventas", { // <-- Ruta relativa limpia
+    headers:{
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  }).then((response) => {
+    console.log("Datos de Ventas:", response.data);
+    setVentas(response.data);
+  }).catch((error) => {
+    console.error("Error en Ventas:", error);
+  });
+};
 
   //state que controla el modal
   const [openModal, setOpenModal] = useState(false);

@@ -7,17 +7,20 @@ export const TableDespachos = () => {
   const [despachos, setDespachos] = useState([]);
 
   const despacho = async () => {
-    await axios
-      .get("http://192.168.3.20/api/v1/despachos", {
-        headers:{
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-        }
-      })
-      .then((response) => {
-        console.log(response.data);
-        setDespachos(response.data);
-      });
+  await axios
+    .get("/api/v1/despachos", { // <-- Cambiamos la IP por una ruta relativa
+      headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+      }
+    })
+    .then((response) => {
+      console.log(response.data);
+      setDespachos(response.data);
+    })
+    .catch((error) => {
+      console.error("Error conectando al Backend:", error);
+    });
   };
   // Llamada a la función para obtener los datos cuando el componente se monta
   useEffect(() => {
